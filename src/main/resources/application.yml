@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: webpush
+
+# FCM KEY Import  #
+firebase:
+  project-id : webpush-79c07
+  key-path : key/fcm-key.json
