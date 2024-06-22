@@ -29,7 +29,6 @@ public class FcmController {
 
     @PostMapping("/send")
     public ResponseEntity<ApiResponse<Object>> pushMessage(@RequestBody @Validated FcmRequest fcmRequest) throws IOException {
-        log.debug("[+] 푸시 메시지를 전송합니다. ");
         int result = fcmService.sendMessageTo(fcmRequest);
 
         ApiResponse<Object> arw = ApiResponse

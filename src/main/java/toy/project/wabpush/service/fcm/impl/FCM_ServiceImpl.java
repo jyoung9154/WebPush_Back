@@ -23,22 +23,13 @@ public class FCM_ServiceImpl implements FCM_Service {
     @Value("${firebase.key-path}")
     private String fcmKeyPath;
 
-    /**
-     * 푸시 메시지 처리를 수행하는 비즈니스 로직
-     *
-     * @param fcmRequest 모바일에서 전달받은 Object
-     * @return 성공(1), 실패(0)
-     */
     @Override
     public int sendMessageTo(FcmRequest fcmRequest) throws IOException {
 
         String message = makeMessage(fcmRequest);
         RestTemplate restTemplate = new RestTemplate();
 
-        /**
-         * 추가된 사항 : RestTemplate 이용중 클라이언트의 한글 깨짐 증상에 대한 수정
-         * @refernece : https://stackoverflow.com/questions/29392422/how-can-i-tell-resttemplate-to-post-with-utf-8-encoding
-         */
+        /* UTF-8 인코딩 */
         restTemplate.getMessageConverters()
                 .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 
@@ -51,16 +42,10 @@ public class FCM_ServiceImpl implements FCM_Service {
         String API_URL = "https://fcm.googleapis.com/v1/projects/webpush-79c07/messages:send";
         ResponseEntity response = restTemplate.exchange(API_URL, HttpMethod.POST, entity, String.class);
 
-        System.out.println(response.getStatusCode());
-
         return response.getStatusCode() == HttpStatus.OK ? 1 : 0;
     }
 
-    /**
-     * Firebase Admin SDK의 비공개 키를 참조하여 Bearer 토큰을 발급 받습니다.
-     *
-     * @return Bearer token
-     */
+    /* Firebase Admin SDK의 비공개 키를 참조하여 Bearer 토큰을 발급 */
     private String getAccessToken() throws IOException {
 
         GoogleCredentials googleCredentials = GoogleCredentials
@@ -71,11 +56,7 @@ public class FCM_ServiceImpl implements FCM_Service {
         return googleCredentials.getAccessToken().getTokenValue();
     }
 
-    /**
-     * FCM 전송 정보를 기반으로 메시지를 구성합니다. (Object -> String)
-     *
-     * @return String
-     */
+    /* FCM 전송 정보를 기반으로 메시지를 구성 */
     private String makeMessage(FcmRequest fcmRequest) throws JsonProcessingException {
 
         ObjectMapper om = new ObjectMapper();
