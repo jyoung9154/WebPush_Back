@@ -1,6 +1,7 @@
 package toy.project.wabpush.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -27,15 +28,21 @@ public class FcmController {
         this.fcmService = fcmService;
     }
 
+    /* PUSH 메세지 전송 기능 */
     @PostMapping("/send")
     public ResponseEntity<ApiResponse<Object>> pushMessage(@RequestBody @Validated FcmRequest fcmRequest) throws IOException {
+
+        /* PUSH 메세지 */
         int result = fcmService.sendMessageTo(fcmRequest);
 
+        /* 결과 전달 객체 */
         ApiResponse<Object> arw = ApiResponse
                 .builder()
                 .data(result)
                 .status(SUCCESS)
                 .build();
+
+        /* 전달 */
         return new ResponseEntity<>(arw, HttpStatus.OK);
     }
 }

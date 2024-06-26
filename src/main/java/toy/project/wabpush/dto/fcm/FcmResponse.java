@@ -11,6 +11,7 @@ public class FcmResponse {
     private boolean validateOnly;
     private FcmResponse.Message message;
 
+    /* PUSH 객체 */
     @Builder
     @AllArgsConstructor
     @Getter
@@ -19,6 +20,7 @@ public class FcmResponse {
         private String token;
     }
 
+    /* 메세지 내용 객체 */
     @Builder
     @AllArgsConstructor
     @Getter

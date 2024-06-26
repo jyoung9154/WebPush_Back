@@ -16,9 +16,11 @@ import java.io.InputStream;
 @Component
 public class FCMInitializer {
 
+    /* FCM Key 데이터 */
     @Value("${firebase.key-path}")
     private String fcmKeyPath;
 
+    /* FCM 초기화 */
     @PostConstruct
     public void getFcmCredential(){
         try {

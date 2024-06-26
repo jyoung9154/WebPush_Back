@@ -20,12 +20,15 @@ import java.util.List;
 @Service
 public class FCM_ServiceImpl implements FCM_Service {
 
+    /* FCM Key 데이터 */
     @Value("${firebase.key-path}")
     private String fcmKeyPath;
 
+    /* 메세지 전송 기능 */
     @Override
     public int sendMessageTo(FcmRequest fcmRequest) throws IOException {
 
+        /* 메세지 가공 객체 */
         String message = makeMessage(fcmRequest);
         RestTemplate restTemplate = new RestTemplate();
 
@@ -33,6 +36,7 @@ public class FCM_ServiceImpl implements FCM_Service {
         restTemplate.getMessageConverters()
                 .add(0, new StringHttpMessageConverter(StandardCharsets.UTF_8));
 
+        /* 메세지 전송 */
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("Authorization", "Bearer " + getAccessToken());
